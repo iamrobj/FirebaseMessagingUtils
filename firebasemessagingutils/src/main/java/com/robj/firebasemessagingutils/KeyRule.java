@@ -6,7 +6,7 @@ import android.text.TextUtils;
  * Created by jj on 26/11/17.
  */
 
-public abstract class KeyRule extends Rule {
+public abstract class KeyRule {
 
     private final String key;
 
@@ -20,4 +20,5 @@ public abstract class KeyRule extends Rule {
         return this.key.equals(key);
     }
 
+    public abstract boolean isRuleMet(String value);
 }

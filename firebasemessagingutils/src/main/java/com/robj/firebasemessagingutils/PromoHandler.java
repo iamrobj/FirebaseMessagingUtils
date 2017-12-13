@@ -4,9 +4,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.StringRes;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.content.ContextCompat;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -28,6 +26,7 @@ public class PromoHandler {
     @DrawableRes
     private final int defaultIcon;
     private List<Rule> rules = new ArrayList();
+    private List<KeyRule> keyRules = new ArrayList();
     private PendingIntentCreator pendingIntentCreator;
 
     private PromoHandler(Builder builder) {
@@ -35,6 +34,7 @@ public class PromoHandler {
         this.channelId = builder.channelId;
         this.defaultIcon = builder.defaultIcon;
         this.rules = builder.rules;
+        this.keyRules = builder.keyRules;
         this.pendingIntentCreator = builder.pendingIntentCreator;
     }
 
@@ -45,11 +45,16 @@ public class PromoHandler {
     public void onMessageReceived(String title, String body, Map<String, String> data) {
         try {
             Log.i(TAG, "FCM received: " + data.toString());
+            for(Rule rule : rules)
+                if(!rule.isRuleMet()) {
+                    Log.i(TAG, "A non key based rule was not satisfied..");
+                    return;
+                }
             for(String s : data.keySet()) {
                 String value = data.get(s);
                 boolean isCustomRule = false;
-                for(Rule rule : rules) {
-                    if(!(rule instanceof KeyRule) || ((KeyRule) rule).isRule(s)) {
+                for(KeyRule rule : keyRules) {
+                    if(rule.isRule(s)) {
                         isCustomRule = true;
                         if(!rule.isRuleMet(value)) {
                             Log.i(TAG, "Custom rule " + s + " was not satisfied..");
@@ -131,6 +136,7 @@ public class PromoHandler {
         @DrawableRes
         private int defaultIcon;
         private final List<Rule> rules = new ArrayList();
+        private final List<KeyRule> keyRules = new ArrayList();
         private PendingIntentCreator pendingIntentCreator;
 
         public Builder(Context context) {
@@ -149,6 +155,11 @@ public class PromoHandler {
 
         public Builder addRule(Rule rule) {
             rules.add(rule);
+            return this;
+        }
+
+        public Builder addKeyRule(KeyRule rule) {
+            keyRules.add(rule);
             return this;
         }
 
