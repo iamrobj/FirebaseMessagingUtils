@@ -49,7 +49,7 @@ public class PromoHandler {
                 String value = data.get(s);
                 boolean isCustomRule = false;
                 for(Rule rule : rules) {
-                    if(rule.isRule(s)) {
+                    if(!(rule instanceof KeyRule) || ((KeyRule) rule).isRule(s)) {
                         isCustomRule = true;
                         if(!rule.isRuleMet(value)) {
                             Log.i(TAG, "Custom rule " + s + " was not satisfied..");
