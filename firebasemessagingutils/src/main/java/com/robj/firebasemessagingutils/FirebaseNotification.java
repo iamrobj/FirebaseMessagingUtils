@@ -38,7 +38,7 @@ public class FirebaseNotification {
         String icon = data.get(ICON);
         int iconResId = 0;
         if(!TextUtils.isEmpty(icon))
-            iconResId = context.getResources().getIdentifier(icon, "drawable", BuildConfig.APPLICATION_ID);
+            iconResId = context.getResources().getIdentifier(icon, "drawable", context.getPackageName());
         if(iconResId == 0)
             iconResId = defaultIcon;
         else
@@ -57,7 +57,7 @@ public class FirebaseNotification {
         if(pendingIntent == null) {
             Intent i = null;
             if (data.containsKey(RATE))
-                i = getUrlIntent("https://play.google.com/store/apps/details?id=" + BuildConfig.APPLICATION_ID);
+                i = getUrlIntent("https://play.google.com/store/apps/details?id=" + context.getPackageName());
             else if (data.containsKey(LINK_TO))
                 i = getUrlIntent(data.get(LINK_TO));
             if (i != null)
