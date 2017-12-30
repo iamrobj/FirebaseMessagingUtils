@@ -40,8 +40,14 @@ enum OptionalRules {
                     return false;
                 }
             case VERSION_CODE:
-                int versionCode = Integer.valueOf(key);
-                return BuildConfig.VERSION_CODE == versionCode;
+                try {
+                    int currentVersionCode = context.getPackageManager().getPackageInfo(context.getPackageName(), 0).versionCode;
+                    int versionCode = Integer.valueOf(key);
+                    return currentVersionCode == versionCode;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                }
             default:
                 Log.i(TAG, "Key with value " + key + " is unknown, ignoring rule..");
                 return true; //Ignore new keys
