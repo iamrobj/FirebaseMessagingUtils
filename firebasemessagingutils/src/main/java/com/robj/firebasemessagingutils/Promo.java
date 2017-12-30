@@ -12,9 +12,9 @@ import java.util.concurrent.TimeUnit;
  */
 public class Promo implements Parcelable {
 
-    private static final String OFFER_CODE = "offer_code";
-    private static final String TTL = "ttl";
-    private static final String THEME = "theme";
+    public static final String OFFER_CODE = "offer_code";
+    public static final String TTL = "ttl";
+    public static final String THEME = "theme";
     public static final String ID = "id";
 
     public final long id;

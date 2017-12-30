@@ -20,6 +20,7 @@ public class PromoHandler {
     private static final String TAG = PromoHandler.class.getSimpleName();
 
     private static final int ID_FIREBASE = 1235;
+    public static final String IS_SILENT = "is_silent";
 
     private final Context context;
     private final String channelId;
@@ -89,10 +90,23 @@ public class PromoHandler {
                 PromoManager.savePromo(getContext(), promo);
             }
 
-            displayNotification(title, body, data);
+            if(!isSilentNotification(data))
+                displayNotification(title, body, data);
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private boolean isSilentNotification(Map<String, String> data) {
+        if(data.containsKey(IS_SILENT)) {
+            String isSilent = data.get(IS_SILENT);
+            try {
+                return Boolean.valueOf(isSilent);
+            } catch (Exception e) {
+                Log.e(TAG, "is_silent key couldn't be parsed as a boolean..");
+            }
+        }
+        return false;
     }
 
     private boolean previouslyDisplayed(Map<String, String> data) {

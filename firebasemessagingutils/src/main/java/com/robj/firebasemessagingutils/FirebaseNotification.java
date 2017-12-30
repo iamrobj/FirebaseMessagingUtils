@@ -16,7 +16,7 @@ import java.util.Map;
 public class FirebaseNotification {
 
     public static final String RATE = "rate";
-    private static final String LINK_TO = "link_to";
+    public static final String LINK_TO = "link_to";
     private static final String ICON = "icon";
     private static final String TAG = FirebaseNotification.class.getSimpleName();
 
