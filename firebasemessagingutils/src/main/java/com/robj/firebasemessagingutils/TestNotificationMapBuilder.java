@@ -26,18 +26,8 @@ public class TestNotificationMapBuilder {
         return this;
     }
 
-    public TestNotificationMapBuilder setTimeToLive(int ttl) {
-        map.put(Promo.TTL, String.valueOf(ttl));
-        return this;
-    }
-
-    public TestNotificationMapBuilder setOfferCode(int offerCode) {
-        map.put(Promo.OFFER_CODE, String.valueOf(offerCode));
-        return this;
-    }
-
-    public TestNotificationMapBuilder setTheme(String themeName) {
-        map.put(Promo.THEME, themeName);
+    public TestNotificationMapBuilder setPromo(TestPromoMapBuilder promoMapBuilder) {
+        map.putAll(promoMapBuilder.build());
         return this;
     }
 
