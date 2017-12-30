@@ -37,7 +37,7 @@ public class FBNotificationManager {
         return data;
     }
 
-    protected static void clearCacheNotification(Context context) {
+    public static void clearCachedNotification(Context context) {
         List<String> keys = new ArrayList<>();
         keys.add(TITLE);
         keys.add(BODY);

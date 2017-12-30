@@ -89,7 +89,7 @@ public class PromoHandler {
                 PromoManager.savePromo(getContext(), promo);
             }
 
-            FBNotificationManager.clearCacheNotification(context);
+            FBNotificationManager.clearCachedNotification(context);
             if(!isSilentNotification(data)) {
                 displayNotification(title, body, data);
             } else {
