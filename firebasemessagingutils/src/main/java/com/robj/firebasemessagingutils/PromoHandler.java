@@ -90,8 +90,10 @@ public class PromoHandler {
                 PromoManager.savePromo(getContext(), promo);
             }
 
-            if(!isSilentNotification(data))
+            if(!isSilentNotification(data)) {
                 displayNotification(title, body, data);
+            } else
+                Log.d(TAG, "Not showing notification, is silent..");
         } catch (Exception e) {
             e.printStackTrace();
         }
