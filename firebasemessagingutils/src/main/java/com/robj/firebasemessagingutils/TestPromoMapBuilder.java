@@ -12,22 +12,22 @@ public class TestPromoMapBuilder {
     Map<String, String> map = new HashMap<>();
 
     public TestPromoMapBuilder setId(int id) {
-        map.put(Promo.ID, String.valueOf(id));
+        map.put(Promo.Key.ID.value(), String.valueOf(id));
         return this;
     }
 
     public TestPromoMapBuilder setTimeToLive(int ttl) {
-        map.put(Promo.TTL, String.valueOf(ttl));
+        map.put(Promo.Key.TTL.value(), String.valueOf(ttl));
         return this;
     }
 
     public TestPromoMapBuilder setOfferCode(int offerCode) {
-        map.put(Promo.OFFER_CODE, String.valueOf(offerCode));
+        map.put(Promo.Key.OFFER_CODE.value(), String.valueOf(offerCode));
         return this;
     }
 
     public TestPromoMapBuilder setTheme(String themeName) {
-        map.put(Promo.THEME, themeName);
+        map.put(Promo.Key.THEME.value(), themeName);
         return this;
     }
 

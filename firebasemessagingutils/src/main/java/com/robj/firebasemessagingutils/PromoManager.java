@@ -55,6 +55,7 @@ public class PromoManager {
                 promo = null;
             }
             e.onNext(new Optional(promo));
+            e.onComplete();
             return;
         });
     }

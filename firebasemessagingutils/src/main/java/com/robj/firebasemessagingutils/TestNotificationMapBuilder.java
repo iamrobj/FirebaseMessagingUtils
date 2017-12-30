@@ -22,7 +22,7 @@ public class TestNotificationMapBuilder {
     }
 
     public TestNotificationMapBuilder setId(int id) {
-        map.put(Promo.ID, String.valueOf(id));
+        map.put(Promo.Key.ID.value(), String.valueOf(id));
         return this;
     }
 
@@ -32,21 +32,26 @@ public class TestNotificationMapBuilder {
     }
 
     public TestNotificationMapBuilder setIsSilent(boolean isSilent) {
-        map.put(PromoHandler.IS_SILENT, String.valueOf(isSilent));
+        map.put(FirebaseNotification.Key.IS_SILENT.value(), String.valueOf(isSilent));
+        return this;
+    }
+
+    public TestNotificationMapBuilder shouldCacheIfSilent(boolean shouldCache) {
+        map.put(FirebaseNotification.Key.CACHE_SILENT.value(), String.valueOf(shouldCache));
         return this;
     }
 
     public TestNotificationMapBuilder setAskForRating(boolean askForRating) {
-        if(map.containsKey(FirebaseNotification.LINK_TO))
+        if(map.containsKey(FirebaseNotification.Key.LINK_TO.value()))
             throw new RuntimeException("Ask for rating will override url link provided..");
-        map.put(FirebaseNotification.RATE, String.valueOf(askForRating));
+        map.put(FirebaseNotification.Key.RATE.value(), String.valueOf(askForRating));
         return this;
     }
 
     public TestNotificationMapBuilder setLinkTo(String urlToOpen) {
-        if(map.containsKey(FirebaseNotification.RATE))
+        if(map.containsKey(FirebaseNotification.Key.RATE.value()))
             throw new RuntimeException("Link to will override ask for rating..");
-        map.put(FirebaseNotification.LINK_TO, urlToOpen);
+        map.put(FirebaseNotification.Key.LINK_TO.value(), urlToOpen);
         return this;
     }
 

@@ -15,9 +15,6 @@ import java.util.Map;
  */
 public class FirebaseNotification {
 
-    public static final String RATE = "rate";
-    public static final String LINK_TO = "link_to";
-    private static final String ICON = "icon";
     private static final String TAG = FirebaseNotification.class.getSimpleName();
 
     public final String title;
@@ -35,7 +32,7 @@ public class FirebaseNotification {
 
     public static FirebaseNotification parseNotification(Context context, String title, String body,
                                                          @DrawableRes int defaultIcon, Map<String, String> data, PromoHandler.PendingIntentCreator pendingIntentHandler) {
-        String icon = data.get(ICON);
+        String icon = data.get(Key.ICON.value());
         int iconResId = 0;
         if(!TextUtils.isEmpty(icon))
             iconResId = context.getResources().getIdentifier(icon, "drawable", context.getPackageName());
@@ -56,10 +53,10 @@ public class FirebaseNotification {
 
         if(pendingIntent == null) {
             Intent i = null;
-            if (data.containsKey(RATE))
+            if (data.containsKey(Key.RATE.value()))
                 i = getUrlIntent("https://play.google.com/store/apps/details?id=" + context.getPackageName());
-            else if (data.containsKey(LINK_TO))
-                i = getUrlIntent(data.get(LINK_TO));
+            else if (data.containsKey(Key.LINK_TO.value()))
+                i = getUrlIntent(data.get(Key.LINK_TO.value()));
             if (i != null)
                 pendingIntent = PendingIntent.getActivity(context, 0, i, PendingIntent.FLAG_UPDATE_CURRENT);
         }
@@ -71,6 +68,13 @@ public class FirebaseNotification {
         Intent marketIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         marketIntent.addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY | Intent.FLAG_ACTIVITY_NEW_DOCUMENT | Intent.FLAG_ACTIVITY_NEW_TASK);
         return marketIntent;
+    }
+
+    public enum Key {
+        ID, RATE, LINK_TO, ICON, IS_SILENT, CACHE_SILENT;
+        public String value() {
+            return name().toLowerCase();
+        }
     }
 
 }

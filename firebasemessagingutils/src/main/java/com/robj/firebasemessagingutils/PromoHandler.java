@@ -20,7 +20,6 @@ public class PromoHandler {
     private static final String TAG = PromoHandler.class.getSimpleName();
 
     private static final int ID_FIREBASE = 1235;
-    public static final String IS_SILENT = "is_silent";
 
     private final Context context;
     private final String channelId;
@@ -90,32 +89,48 @@ public class PromoHandler {
                 PromoManager.savePromo(getContext(), promo);
             }
 
+            FBNotificationManager.clearCacheNotification(context);
             if(!isSilentNotification(data)) {
                 displayNotification(title, body, data);
-            } else
+            } else {
+                if(cacheSilentNotification(data))
+                    FBNotificationManager.cacheNotification(context, title, body, data);
                 Log.d(TAG, "Not showing notification, is silent..");
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private boolean isSilentNotification(Map<String, String> data) {
-        if(data.containsKey(IS_SILENT)) {
-            String isSilent = data.get(IS_SILENT);
+    private boolean cacheSilentNotification(Map<String, String> data) {
+        if(data.containsKey(FirebaseNotification.Key.CACHE_SILENT.value())) {
+            String isSilent = data.get(FirebaseNotification.Key.CACHE_SILENT.value());
             try {
                 return Boolean.valueOf(isSilent);
             } catch (Exception e) {
-                Log.e(TAG, "is_silent key couldn't be parsed as a boolean..");
+                Log.e(TAG, FirebaseNotification.Key.CACHE_SILENT.value() + " key couldn't be parsed as a boolean..");
+            }
+        }
+        return false;
+    }
+
+    private boolean isSilentNotification(Map<String, String> data) {
+        if(data.containsKey(FirebaseNotification.Key.IS_SILENT.value())) {
+            String isSilent = data.get(FirebaseNotification.Key.IS_SILENT.value());
+            try {
+                return Boolean.valueOf(isSilent);
+            } catch (Exception e) {
+                Log.e(TAG, FirebaseNotification.Key.IS_SILENT.value() + " key couldn't be parsed as a boolean..");
             }
         }
         return false;
     }
 
     private boolean previouslyDisplayed(Map<String, String> data) {
-        if(data.containsKey(Promo.ID)){
-            if(PrefUtils.readBooleanPref(getContext(), data.get(Promo.ID)))
+        if(data.containsKey(Promo.Key.ID.value())){
+            if(PrefUtils.readBooleanPref(getContext(), data.get(Promo.Key.ID.value())))
                 return true;
-            PrefUtils.writeBoolPref(getContext(), data.get(Promo.ID), true);
+            PrefUtils.writeBoolPref(getContext(), data.get(Promo.Key.ID.value()), true);
         }
         return false;
     }

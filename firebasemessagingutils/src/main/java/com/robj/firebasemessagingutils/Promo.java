@@ -12,11 +12,6 @@ import java.util.concurrent.TimeUnit;
  */
 public class Promo implements Parcelable {
 
-    public static final String OFFER_CODE = "offer_code";
-    public static final String TTL = "ttl";
-    public static final String THEME = "theme";
-    public static final String ID = "id";
-
     public final long id;
     public final String title;
     public final String body;
@@ -81,14 +76,21 @@ public class Promo implements Parcelable {
     }
 
     public static Promo createPromo(String title, String body, Map<String, String> data) {
-        if(data.containsKey(OFFER_CODE) && data.containsKey(TTL)) {
-            int code = Integer.parseInt(data.get(OFFER_CODE));
-            int ttl = Integer.parseInt(data.get(TTL));
-            long id = data.containsKey(ID) ? Long.parseLong(data.get(ID)) : 0;
-            String theme = data.get(THEME);
+        if(data.containsKey(Key.OFFER_CODE.value()) && data.containsKey(Key.TTL.value())) {
+            int code = Integer.parseInt(data.get(Key.OFFER_CODE.value()));
+            int ttl = Integer.parseInt(data.get(Key.TTL.value()));
+            long id = data.containsKey(Key.ID.value()) ? Long.parseLong(data.get(Key.ID.value())) : 0;
+            String theme = data.get(Key.THEME.value());
             return new Promo(id, title, body, Calendar.getInstance().getTimeInMillis(), ttl, code, theme);
         }
         return null;
+    }
+
+    public enum Key {
+        OFFER_CODE, TTL, THEME, ID;
+        public String value() {
+            return name().toLowerCase();
+        }
     }
 
 }
