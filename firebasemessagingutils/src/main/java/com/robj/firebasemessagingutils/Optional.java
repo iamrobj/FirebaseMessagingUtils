@@ -8,7 +8,7 @@ import io.reactivex.annotations.Nullable;
  * Created by Rob J on 21/09/17.
  */
 
-class Optional<T> {
+public final class Optional<T> {
 
     private final T optional;
 
